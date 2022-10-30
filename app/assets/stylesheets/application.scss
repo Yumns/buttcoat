@@ -1,0 +1,108 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ */
+@import 'bootstrap-sprockets';
+@import "bootsy";
+@import "material-dashboard";
+@import "bootstrap";
+@import "material-dashboard/plugins/plugin-datetime-picker";
+@import "md-mixins-customizations";
+@import "overrides";
+@import "hover-effects/push";
+@import "hover-effects/push";
+@import "hover-effects/pulse-shrink";
+
+
+
+
+/* stuff below here needs a home */
+.main-panel {
+  > .content {
+    margin-top: -30px;
+  }
+}
+
+.navbar-brand {
+  font-size: 1.75em;
+  font-variant: small-caps;
+}
+
+.img-card-rank {
+  width: 50px !important;
+}
+
+.jumbotron {
+  background-image: asset-url('splash.jpg');
+  background-size: cover;
+  height: 550px;
+  text-align: center;
+}
+
+.img-circle {
+  border-radius: 50%;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.fancy hr {
+  height: 30px;
+  border-style: solid;
+  border-color: #8c8b8b;
+  border-width: 1px 0 0 0;
+  border-radius: 20px;
+}
+
+.fancy hr:before {
+  display: block;
+  content: "";
+  height: 30px;
+  margin-top: -31px;
+  border-style: solid;
+  border-color: #8c8b8b;
+  border-width: 0 0 1px 0;
+  border-radius: 20px;
+}
+
+.tw_pagination {
+  text-align: center;
+  cursor: default;
+}
+
+.tw_pagination a, .tw_pagination span {
+  padding: 0.2em 0.3em;
+}
+
+.tw_pagination .disabled {
+  color: #aaaaaa;
+}
+
+.tw_pagination .current {
+  font-style: normal;
+  font-weight: bold;
+  background-color: $yellow-500;
+  display: inline-block;
+  width: 1.4em;
+  height: 1.4em;
+  line-height: 1.5;
+  -moz-border-radius: 1em;
+  -webkit-border-radius: 1em;
+  border-radius: 1em;
+  text-shadow: rgba(255, 255, 255, 0.8) 1px 1px 1px;
+}
+
+.tw_pagination a {
+  text-decoration: none;
+  color: black;
+}
+
+.tw_pagination a:hover, .tw_pagination a:focus {
+  text-decoration: underline;
+}
+
+
+*:focus {
+  outline: none;
+}

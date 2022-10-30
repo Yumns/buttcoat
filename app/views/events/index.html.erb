@@ -1,0 +1,76 @@
+<%= content_for(:title, 'Events Listing') %>
+<% if current_user.role? :leader %>
+    <div class="card col-md-12 ">
+      <div class="card-header" data-background-color="dkblue">
+        <h3 class="card-title ">Showing all Events
+          <span class="pull-right">
+              <%= link_to '<i class="fa fa-plus" aria-hidden="true" data-toggle="tooltip" title="Create New Event"></i>'.html_safe,
+                          new_event_path %>
+          </span>
+        </h3>
+      </div>
+      <div class="card-content">
+        <table id='events_listing' class="table table-responsive table-hover table-striped">
+          <thead>
+          <tr>
+            <th>Title</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Duration</th>
+          </tr>
+          </thead>
+
+          <tbody>
+          <% @events.each do |event| %>
+              <tr>
+                <td><%= link_to event.title, event %></td>
+                <td><%= link_to EventLocation.find(event.location_id).name, event_location_path(event.location_id) unless event.location_id.blank? %></td>
+                <td><%= event.description %></td>
+                <td><%= event.category.humanize %></td>
+                <% if event.allDay %>
+                    <td><%= date_for_display(event.start) %></td>
+                    <td><%= date_for_display(event.end) %></td>
+                <% else %>
+                    <td><%= date_for_display(event.start) %></td>
+                    <td><%= date_for_display(event.end) %></td>
+                <% end %>
+                <td><%= event.logged %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+<% else %>
+    <% controller.redirect_to calendar_path %>
+<% end %>
+</div>
+</div>
+<script>
+    $.fn.dataTable.moment('MM/D/YYYY');
+    var table = $('#events_listing').DataTable({
+        "dom": 'ftlp',
+        "order": [4, "desc"],
+        "columnDefs": [
+            {
+                "targets": [3],
+                "visible": true
+            }]
+    });
+    $('ul .event_categories').on('click', 'a', function () {
+        table
+            .columns(3)
+            .search($(this).text())
+            .draw();
+        $('.card-title').contents().last().replaceWith('Showing events in the "' + $(this).text() + '" category');
+
+    });
+    $('#filter_all').click(function () {
+        table
+            .search('')
+            .columns().search('')
+            .draw();
+        $('.card-title').contents().last().replaceWith('Showing all Events');
+    });
+</script>

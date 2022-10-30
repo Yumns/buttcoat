@@ -1,0 +1,42 @@
+<%= content_for(:title, 'Ranks') %>
+<% if current_user.role? :admin %>
+    <div class="text-right">
+      <%= link_to 'Create New Rank', new_rank_path, class: 'btn btn-warning ' %>
+    </div>
+<% end %>
+<div class="row">
+  <% @ranks.each do |rank| %>
+      <div class="card col-sm-8 col-sm-offset-2">
+        <div class="card-header card-header-icon" data-background-color="dkblue">
+          <img src="<%= image_url("ranks/#{rank.name}.png") %>" class="img-card-rank">
+        </div>
+        <h3 class="card-stats"> <%= rank.name %></h3>
+        <div class="card-content">
+          <table class="table table-responsive table-striped">
+            <thead>
+            <tr>
+              <th>Name</th>
+              <th>Rank</th>
+              <th>Position(s)</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% rank.scouts.each do |scout| %>
+                <% if scout.active? %>
+                    <tr>
+                      <td><%= link_to scout.name, scout %></td>
+                      <td><%= scout.rank.name %></td>
+                      <td><%= active_positions(scout) %></td>
+                    </tr>
+                <% end %>
+            <% end %>
+            </table>
+
+        </div>
+      </div>
+  <% end %>
+</div>
+</div>
+
+
+

@@ -1,0 +1,135 @@
+<%= content_for(:title, 'Event ' + @event.title.titlecase) %>
+<div class="row">
+  <div class="card col-sm-10 col-sm-offset-1">
+    <div class="card-header card-header-icon" data-background-color="dkblue">
+      <i class="material-icons">event</i>
+    </div>
+    <div class="card-content">
+      <h4 class="card-title"><%= @event.title %></h4>
+      <div class="col-xs-12">
+        <span class="text-primary bold">Description:</span>
+        <%= @event.description %>
+      </div>
+      <div class="col-xs-6">
+        <span class="text-primary bold">Location: </span>
+        <%= link_to "#{EventLocation.find(@event.location_id).name} <i class='fa fa-map-o' aria-hidden='true'></i>".html_safe ,
+                    event_location_path(@event.location_id) unless @event.location_id.blank? %>
+      </div>
+      <div class="col-xs-6">
+        <span class="text-primary bold">Registration open until:</span>
+        <%= date_for_display(@event.last_registration_date) unless @event.last_registration_date.blank? %>
+      </div>
+      <% if @event.allDay? %>
+          <div class="col-xs-6">
+            <span class="text-primary bold">Start: </span><%= date_for_display(@event.start) %>
+          </div>
+          <div class="col-xs-6">
+            <span class="text-primary bold">End: </span><%= date_for_display(@event.end) %>
+          </div>
+      <% else %>
+          <div class="col-xs-6">
+            <span class="text-primary bold">Start: </span><%= datetime_for_display(@event.start) %>
+          </div>
+          <div class="col-xs-6">
+            <span class="text-primary bold">End: </span><%= datetime_for_display(@event.end) %>
+          </div>
+      <% end %>
+      <div class="col-xs-6">
+        <span class="text-primary bold">Units: </span><%= @event.logged %>
+      </div><div class="col-xs-6">
+        <span class="text-primary bold">Cost: </span>$<%= number_to_currency(@event.cost.to_f, delimiter: '', unit: '')%>
+      </div>
+      <div class="col-xs-12 text-center">
+        <span class="badge"><%= @event.category.humanize.titlecase %></span>
+      </div>
+      &nbsp;<br/>
+    </div>
+    <div class="row"></div>
+    <div class="card-footer">
+      <div class="stats col-xs-12">
+        <div class="col-xs-6 text-left">
+          <i class="material-icons">access_time</i>
+          Created: <%= distance_of_time_in_words_to_now(@event.created_at) %> ago
+        </div>
+        <div class="col-xs-6 text-right">
+          <i class="material-icons ">access_time</i>
+          Updated: <%= distance_of_time_in_words_to_now(@event.updated_at) %> ago
+        </div>
+        &nbsp;<br/>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row col-sm-12 text-center">
+  <% if current_user.role? :admin %>
+      <%= link_to 'Edit', edit_event_path(@event), class: 'btn btn-sm btn-primary' %>
+      <%= link_to 'Delete', event_path(@event), method: :delete,
+                  data: {confirm: 'Are you sure you want to delete this event?'},
+                  class: 'btn btn-sm btn-danger' %>
+  <% end %>
+  <%= link_to 'View Events', calendar_path, class: 'btn btn-sm btn-success' %>
+
+  <% if @event.open_registration? %>
+      <% if current_user.role? :leader %>
+          <% scouts = Scout.joins(:relationships).where(relationships: {user_id: current_user}, active: true) %>
+      <% else %>
+          <% scouts = Scout.allowed_scouts(current_user) %>
+      <% end %>
+      <% scouts.each do |scout| %>
+          <% scout_event = ScoutEvent.find_by(scout_id: scout.id, event_id: @event.id) %>
+          <% if scout_event.blank? %>
+              <%= button_to "Register #{scout.name}", {controller: 'scout_events', action: :create, scout_event: {scout_id: scout.id, event_id: @event.id, registered: true}}, method: :post, class: 'btn btn-sm btn-info' %>
+          <% else %>
+              <%= link_to "Unregister #{scout.name}", scout_event_path(scout_event), method: :delete,
+                          data: {confirm: 'Are you sure you want to unregister for this event?'},
+                          class: 'btn btn-sm btn-danger' %>
+          <% end %>
+      <% end %>
+
+      <% if current_user.registered_adult? %>
+          <% if Adult.find_by(user_id: current_user.id).ypt_expired? %>
+              <%= link_to 'Register Myself', '#hero',
+                          onclick: 'swal({
+                       title: "Unable to register you",
+                       text: "You must be a registered adult and your Youth Protection Training must be current",
+                       type: "warning"
+                       })',
+                          class: 'btn btn-sm btn-info' %>
+          <% else %>
+              <% adult_event = AdultEvent.find_by(adult_id: Adult.find_by(user_id: current_user.id).id, event_id: @event.id) %>
+              <% if adult_event.blank? %>
+                  <%= button_to 'Register Myself', {controller: 'adult_events',
+                                                    action: :create,
+                                                    adult_event: {
+                                                        adult_id: Adult.find_by(user_id: current_user.id).id,
+                                                        event_id: @event.id,
+                                                        registered: true}
+                  },
+                                method: :post,
+                                class: 'btn btn-sm btn-info' %>
+              <% else %>
+                  <%= link_to 'Unregister Myself', adult_event_path(adult_event), method: :delete,
+                              data: {confirm: 'Are you sure you want to unregister for this event?'},
+                              class: 'btn btn-sm btn-danger' %>
+              <% end %>
+          <% end %>
+      <% end %>
+      <div class="row">&nbsp;</div>
+  <% else %>
+      <div class="row">&nbsp;</div>
+      <% unless @event.occurred? %>
+          <div class="alert alert-warning col-xs-10 col-xs-offset-1">
+            <div class="container-fluid">
+              Registration closed <%= date_for_display(@event.last_registration_date) %>
+            </div>
+          </div>
+      <% end %>
+  <% end %>
+</div>
+
+<div class="row">&nbsp;</div>
+<% if @event.occurred? %>
+    <%= render 'events/show_partials/attended' %>
+<% else %>
+    <%= render 'events/show_partials/registered' %>
+<% end %>

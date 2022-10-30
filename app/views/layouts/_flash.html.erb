@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-xs-8 col-sm-offset-2">
+    <% flash.each do |name, msg|
+      case name
+        when 'danger', 'alert' %>
+            <script>
+                swal({
+                    title: "Bye Bye!",
+                    text: "<%= msg %>",
+                    buttonsStyling: false,
+                    confirmButtonClass: "btn btn-success",
+                    type: "warning",
+                    timer: 3000
+                });
+            </script>
+        <% when 'success', 'notice' %>
+            <script>
+                swal({
+                    title: "Good job!",
+                    text: "<%= msg %>",
+                    buttonsStyling: false,
+                    confirmButtonClass: "btn btn-success",
+                    type: "success",
+                    timer: 3000
+                });
+            </script>
+        <% when 'warning' %>
+            <script>
+                swal({
+                    title: "Be Careful!",
+                    text: "<%= msg %>",
+                    buttonsStyling: false,
+                    confirmButtonClass: "btn btn-warning",
+                    type: "warning",
+                    timer: 3000
+                });
+            </script>
+        <% when 'info' %>
+            <script>
+                swal({
+                    title: "Hey There!",
+                    text: "<%= msg %>",
+                    buttonsStyling: false,
+                    confirmButtonClass: "btn btn-info",
+                    type: "info",
+                    timer: 3000
+                });
+            </script>
+        <% end %>
+    <% end %>
+  </div>
+</div>

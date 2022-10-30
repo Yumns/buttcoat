@@ -1,0 +1,115 @@
+<body class="landing-page">
+<%= render 'public/partials/navbar', solid: false %>
+<div class="wrapper">
+  <%= render 'public/partials/header' %>
+  <div class="main main-raised">
+    <div class="container">
+      <div class="section" id="join_us">
+        <div class="col-md-6">
+          <div class="card">
+            <h3 class="header header-primary">&nbsp;&nbsp;Join Our Troop!</h3>
+            <div class="content">
+              Troop <%= Rails.configuration.troop_website.troop_number %> is a scout led troop. This means that the
+              scouts decide on the outings that interest them the
+              most. They vote on it and with the guidance and support of trained adult leaders, plan and lead these
+              events. Scout leaders make sure that each scout takes on different roles. Everything from leadership
+              responsibility to cooperative team building is encouraged and taught. Never tried it before? No problem,
+              you’ll be learning new skills while you’re having fun. And these are skills you can use for a lifetime.
+              Plus, think on this. When Monday morning rolls around, you get to say, “I hiked and fished this weekend. I
+              explored an amazing cave and learned rock climbing. I tried skiing and snowboarding and it was great.”
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card">
+            <h3 class="header header-primary">&nbsp;&nbsp;Troop Meetings</h3>
+            <div class="content col-md-4">
+              <%= Rails.configuration.troop_website.troop_meetings %>
+            </div>
+            <div class="col-md-8">
+              <iframe src="https://www.google.com/maps/embed/v1/place?key=<%= ENV['GOOGLE_MAPS_API_KEY'] || 'AIzaSyA9Oo2SoS99G7Z1lF_qh9aGX3fHJu67bg4' %>&q=<%= Rails.configuration.troop_website.meeting_location %>"
+                      width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card">
+            <h3 class="header header-primary">&nbsp;&nbsp;Where does your trail lead?</h3>
+            <div class="content">
+              Your adventure starts here with Boy Scouts. Picture yourself open tent camping below a million visible
+              stars
+              or backpacking through a towering pine forest. Can you see yourself caving above a stalagmite filled
+              cavern
+              or
+              horseback riding through a sandy limestone valley? Have you ever thought of canoeing on a crystal clear
+              lake,
+              or whitewater rafting in a trout-filled river? With Boy Scout
+              Troop <%= Rails.configuration.troop_website.troop_number %>, we don’t just talk about
+              adventure,
+              we make it happen.
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card">
+            <h3 class="header header-primary">&nbsp;&nbsp;How do I join
+              Troop <%= Rails.configuration.troop_website.troop_number %>?</h3>
+            <div class="content">
+              <table class="table">
+                <tr>
+                  <td width="25%" class="text-primary">Age to Join</td>
+                  <td width="5%"></td>
+                  <td>11 Years or older - or - 10 1/2 and completed 5th Grade or earned Arrow of Light</td>
+                </tr>
+                <tr>
+                  <td class="text-primary">Scoutmaster Conference</td>
+                  <td></td>
+                  <td>​Each boy wishing to join the troop will participate in a conference with the Scoutmaster. At
+                    least
+                    one parent or guardian must attend this conference.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="text-primary">​Application Form</td>
+                  <td></td>
+                  <td>A New Youth Application: Application must be filled out and signed by the boy and parent.</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card">
+            <h3 class="header header-primary">&nbsp;&nbsp;Where we have been</h3>
+            <div class="content">
+              Here are some of fun outings we’ve enjoyed over the past couple of years.
+              <ul class="list-group">
+                <% Rails.configuration.troop_website.past_trips.each do |location| %>
+                    <li class="list-group-item"><%= location %></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="join_us_2">
+      <div class="container">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="card">
+            <h3 class="header header-primary">&nbsp;&nbsp;Ready to start on your next adventure?</h3>
+            <div class="content">
+              With Boy Scout troop <%= Rails.configuration.troop_website.troop_number %>, we know the trail that will
+              lead you there.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>

@@ -1,0 +1,31 @@
+<div class="page-header header-filter" data-parallax="active" style="background-image: url(<%= image_url('public/public_landing.jpg') %>); margin-top: 0px;">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <p>&nbsp;</p>
+        <% if current_page?(action: :join_our_troop) %>
+            <h1 class="title">Want to Join Troop <%= Rails.configuration.troop_website['troop_number'] %>?</h1>
+        <% else %>
+            <h1 class="title">Boy Scout Troop <%= Rails.configuration.troop_website['troop_number'] %></h1>
+        <% end %>
+        <h1>&nbsp;</h1>
+        <h2></h2>
+        <% if current_page?(action: :join_our_troop) %>
+            <h4> <%= Rails.configuration.troop_website.join_tag_line %></h4>
+        <% else %>
+            <h4><%= Rails.configuration.troop_website.welcome_tag_line %></h4>
+        <% end %>
+      </div>
+      <div class="col-md-12 text-center small">
+        <h1>&nbsp;</h1>
+        <% if current_page?(action: :join_our_troop) %>
+            <br/>
+        <% else %>
+            <h4>&nbsp;</h4>
+        <% end %>
+        <p><%= Rails.configuration.troop_website.welcome_sub_tag_line_1 %><br/>
+          <%= Rails.configuration.troop_website.welcome_sub_tag_line_2 %></p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,50 @@
+<%= content_for(:title, 'Patrols') %>
+
+<% if current_user.role? :admin %>
+    <div class="text-right">
+      <%= link_to 'Create New Patrol', new_patrol_path, class: 'btn btn-warning ' %>
+    </div>
+<% end %>
+<div class="row">
+  <% @patrols.each do |patrol| %>
+      <div class="col-sm-8 col-sm-offset-2">
+        <div class="card">
+          <div class="card-header" data-background-color="dkblue">
+            <h4 class="card-title"><%= patrol.name %>
+              <span class="label label-success"><%= patrol.scouts.where(active: true).count %></span>
+              <% if current_user.role? :admin %>
+              <span class="pull-right">
+                <%= link_to "<i class='material-icons' data-toggle='tooltip' title='Edit Patrol'>create</i>".html_safe, edit_patrol_path(patrol) %>
+                <%= link_to "<i class='material-icons' data-toggle='tooltip' title='Delete Patrol'>delete</i>".html_safe, patrol,
+                            method: :delete, data: {confirm: "Are you sure you wish to delete the #{patrol.name} patrol?"} %>
+                </span>
+              <% end %>
+            </h4>
+          </div>
+          <div class="card-content">
+            <p class="card-text">
+            <table class="table table-responsive table-striped">
+              <thead>
+              <tr>
+                <th>Scout</th>
+                <th>Rank</th>
+                <th>Position(s)</th>
+              </tr>
+              </thead>
+              <tbody>
+              <% patrol.scouts.each do |scout| %>
+                  <% if scout.active %>
+                      <tr>
+                        <td><%= link_to scout.name, scout %></td>
+                        <td><%= scout.rank.name %></td>
+                        <td><%= active_positions(scout) %></td>
+                      </tr>
+                  <% end   %>
+              <% end %>
+              </table>
+            </p>
+          </div>
+        </div>
+      </div>
+  <% end %>
+</div>

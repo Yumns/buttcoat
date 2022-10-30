@@ -1,0 +1,52 @@
+<%= content_for(:title, 'Adult Record') %>
+<div class="card col-sm-10 col-sm-offset-1">
+  <div class="row">
+    <div class="card-header" data-background-color="dkblue">
+      <h4><%= @adult.name %>
+        <span class="pull-right">
+              <%= link_to "<i class='material-icons' data-toggle='tooltip' title='Edit Adult Details' >create</i>".html_safe,
+                          edit_adult_path(@adult) %>
+            </span>
+      </h4>
+    </div>
+    <div class="card-content">
+      <% if @adult.ypt_expired? %>
+          <div class="alert-danger text-center">
+            <div class="row"></div>
+            <h4>Youth Protection Training Expired</h4>
+            <div class="row"></div>
+          </div>
+      <% end %>
+      <table class="table table-responsive">
+        <tr>
+          <% unless @adult.address.blank? %>
+              <td class="text-primary bold" >Address</td>
+              <td colspan="3"><%= @adult.address.full %></td>
+          <% end %>
+          <td class="text-primary bold">Email:</td>
+          <td><%= @adult.email %></td>
+        </tr>
+        <tr>
+          <td class="text-primary bold">Phone:</td>
+          <td><%= number_to_phone(@adult.phone) %></td>
+          <td class="text-primary bold">BSA ID:</td>
+          <td><%= @adult.bsa_id %></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td class="text-primary bold">DOB:</td>
+          <td><%= date_for_display(@adult.dob) %></td>
+          <td class="text-primary bold">Drivers License:</td>
+          <td><%= @adult.drivers_license %></td>
+          <td class="text-primary bold">Joined:</td>
+          <td><%= date_for_display(@adult.joined) %></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <%= render 'adults/show_partials/positions' %>
+  <%= render 'adults/show_partials/training' %>
+  <%= render 'adults/show_partials/vehicles' %>
+  <%= render 'adults/show_partials/events' %>
+</div>

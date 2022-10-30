@@ -1,0 +1,5 @@
+<%= content_for(:title, 'Articles') %>
+
+<div class="tw_pagination"><%= will_paginate %></div>
+<%= render 'articles', obj: @articles %>
+<div class="tw_pagination"><%= will_paginate %></div>

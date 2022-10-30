@@ -1,0 +1,92 @@
+// move main body up
+.navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+  margin-left: 0px;
+}
+
+// remove focus border
+.btn:focus, .btn:active, .btn:active:focus,
+.navbar .navbar-nav > li > a.btn:focus,
+.navbar .navbar-nav > li > a.btn:active,
+.navbar .navbar-nav > li > a.btn:active:focus {
+  outline: 0;
+}
+
+// remove underlines from links
+a:hover, a:visited, a:link, a:active
+{
+  text-decoration: none;
+}
+
+.badge a{
+  color: $white-color;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover{
+  background-color: $color-secondary-1-0;
+}
+
+
+.nav-tabs > li > a:hover{
+  background-color: $color-secondary-2-0;
+}
+
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus, .nav-tabs > li.current > a:focus {
+  background-color: $color-complement-0;
+}
+
+
+
+div.login-page {
+  background: image-url('login.jpeg') no-repeat center center fixed;
+}
+
+div.register-page {
+  background: image-url('moss.jpeg') no-repeat center center fixed;
+}
+
+.progress-bar-dkblue {
+  @include progress-bar-variant($progress-bar-dkblue-bg);
+}
+
+.error {
+  color: $color-secondary-1-2 !important;
+}
+
+#map-container {
+  height: 400px;
+  border-radius: 16px 16px;
+  border-color: #fff;
+  border-style: solid;
+  box-shadow: 2px 2px 10px #B1B1B1;
+  margin-top: 25px;
+  border-width: 7px;
+}
+#map-canvas {
+  height: 384px;
+  width: 100%;
+}
+
+// Bootsy buttons
+ul.wysihtml5-toolbar a.btn
+{
+  @include btn-styles($brand-dkblue);
+}
+
+ul.wysihtml5-toolbar a.btn.btn-default.wysihtml5-command-active
+{
+  background: $color-secondary-1-0;
+}
+body.form-control.bootsy_text_area.wysihtml5-editor {
+  border:dotted 2px blue !important;
+}
+
+.box  {
+  border: 1px $color-primary-0 solid;
+  padding: 9px;
+  display: block;
+}
+
+ol li.list-group-item {
+  list-style: decimal inside;
+  display: list-item;
+}

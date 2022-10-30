@@ -1,0 +1,34 @@
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header" data-background-color="dkblue">
+      <h4>Positions Held <span class="label label-info"><%= @scout_positions_held.count%></span>
+      <span class="pull-right">
+        <%= link_to '<i class="fa fa-plus" aria-hidden="true" data-toggle="tooltip" title="Add New Position"></i>'.html_safe,
+                                           new_scout_position_path(scout_id: params[:scout_id]) if current_user.role?(:leader)%>
+      </span></h4>
+    </div>
+    <div class="card-content">
+      <table class="table table-responsive table-striped ">
+        <thead>
+        <tr>
+
+          <th>Position</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Days Held</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @scout_positions_held.each do |scout_position| %>
+            <tr>
+              <td><%= link_to scout_position.position.name, edit_scout_position_path(scout_position) %></td>
+              <td><%= date_for_display(scout_position.start_date) %></td>
+              <td><%= date_for_display(scout_position.end_date) %></td>
+              <td><%= days_between(scout_position.start_date, scout_position.end_date) %></td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

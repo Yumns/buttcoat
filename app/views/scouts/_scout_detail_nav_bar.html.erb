@@ -1,0 +1,40 @@
+<div class="hidden-print">
+  <ul class="nav nav-tabs" id="myTab">
+    <li class="dropdown active">
+      <a href="#" id="myTabDrop1" class="dropdown-toggle" data-toggle="dropdown">
+        Ranks<b class="caret"></b>
+      </a>
+      <ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop1">
+        <% @ranks.each do |rank| %>
+            <% unless rank.id == 1 %>
+                <li>
+                  <a href="#<%= rank.id %>" tabindex="-1" data-toggle="tab" onclick='$("#myTabContent").show();$("#view-scout-detail").hide()'><%= rank.name %> </a>
+                </li>
+            <% end %>
+        <% end %>
+      </ul>
+    </li>
+
+    <li><%= link_to 'Merit Badges', scout_merit_badge_path, remote: true %></li>
+    <li><%= link_to 'Activities', scout_event_path, remote: true %></li>
+    <li><%= link_to 'Positions Held', scout_position_path, remote: true %></li>
+    <li><%= link_to 'Training', scout_training_path, remote: true %></li>
+    <li><%= link_to 'Awards', scout_award_path, remote: true %></li>
+
+  </ul>
+  <div class="card">
+    <div class="card-content">
+      <!-- Render Scout Rank and Requirements -->
+      <div id="view-scout-detail"></div>
+      <div id="myTabContent" class="tab-content" style="margin-top: 0;">
+        <% @ranks.each do |rank| %>
+            <% unless rank.id == 1 %>
+                <div class="tab-pane fade in <%= 'active' if rank.id == @scout.rank.id + 1 %>" id="<%= rank.id %>">
+                  <%= render 'scouts/scout_rank_view', current_rank_selected: rank.id %>
+                </div>
+            <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

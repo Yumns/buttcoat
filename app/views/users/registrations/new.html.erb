@@ -1,0 +1,95 @@
+<div class="wrapper wrapper-full-page">
+  <div class="full-page register-page">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="card card-signup">
+            <h2 class="card-title text-center">Register</h2>
+            <div class="row">
+              <div class="col-md-5 col-md-offset-1">
+                <div class="card-content">
+                  <div class="info info-horizontal">
+                    <div class="icon icon-rose">
+                      <i class="material-icons">timeline</i>
+                    </div>
+                    <div class="description">
+                      <h4 class="info-title">Description #1</h4>
+                      <p class="description">
+                        Description #1 sentence will be placed here in the future.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="info info-horizontal">
+                    <div class="icon icon-primary">
+                      <i class="material-icons">code</i>
+                    </div>
+                    <div class="description">
+                      <h4 class="info-title">Description #2</h4>
+                      <p class="description">
+                        Description #3 sentence will be placed here in the future.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="info info-horizontal">
+                    <div class="icon icon-info">
+                      <i class="material-icons">group</i>
+                    </div>
+                    <div class="description">
+                      <h4 class="info-title">Description #3</h4>
+                      <p class="description">
+                        Description #3 sentence will be placed here in the future.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-5">
+              </div>
+
+              <%= form_for(resource, :html => {class: 'form-horizontal', role: 'form'},
+                           as: resource_name, url: registration_path(resource_name)) do |f| %>
+                  <div class="card-content col-sm-5">
+
+                    <%= devise_error_messages! %>
+
+                      <div class=" input-group">
+                        <span class="input-group-addon">
+                          <i class="material-icons">face</i>
+                        </span>
+                        <%= f.text_field :username, class: 'form-control', placeholder: 'Full name', autofocus: true %>
+                      </div>
+                      <div class="input-group">
+                        <span class="input-group-addon">
+                          <i class="material-icons">email</i>
+                        </span>
+                        <%= f.email_field :email, class: 'form-control', placeholder: :email %>
+                      </div>
+
+                      <div class="control-label input-group">
+                        <span class="input-group-addon">
+                          <i class="material-icons">lock_outline</i>
+                        </span>
+                        <%= f.password_field :password, class: 'form-control', autocomplete: 'off', placeholder: :password %>
+                      </div>
+                      <div class="control-label input-group">
+                        <span class="input-group-addon">
+                          <i class="material-icons">lock_outline</i>
+                        </span>
+                        <%= f.password_field :password_confirmation, class: 'form-control',
+                                             autocomplete: 'off', placeholder: :password_confirmation %>
+                      </div>
+
+                      <<div class="footer text-center">
+                        <%= f.submit 'Sign up', class: 'btn btn-primary btn-lg' %>
+                      </div>
+                    </div>
+                  </div>
+              <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

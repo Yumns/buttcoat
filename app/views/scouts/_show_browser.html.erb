@@ -1,0 +1,41 @@
+<div class="hidden-print">
+
+  <!--  Nav tabs between ranks -->
+  <ul class="nav nav-tabs" role="tablist" >
+    <% next_rank = @scout.rank_id + 1 %>
+    <% Rank.all.each do |rank| %>
+        <% case rank.id %>
+    <% when 1 # Just Joined (hide from view)        %>
+        <% when next_rank # Current rank         %>
+            <li class="nav-item active">
+              <a role="presentation"
+                 class="nav-link"
+                 data-toggle="tab"
+                 aria-expanded="true"
+                 href="#rank<%= rank.id %>" role="tablist"><%= rank.name %></a>
+            </li>
+        <% else %>
+            <li class="nav-item">
+              <a role="presentation" class="nav-link" data-toggle="tab" href="#rank<%= rank.id %>" role="tablist"><%= rank.name %></a>
+            </li>
+        <% end %>
+    <% end %>
+  </ul>
+  <!--- tab panes -->
+  <div class="tab-content">
+    <% Rank.all.each do |r| %>
+        <% tab_class = 'tab-pane' %>
+        <% tab_class += ' active' if next_rank == r.id %>
+        <div class="tab-content">
+          <div role="tabpanel" class="<%= tab_class %>" id="rank<%= r.id %>" role="tabpanel">
+            <%= render 'scouts/scout_rank_view', current_rank_selected: r.id %>
+          </div>
+        </div>
+    <% end %>
+  </div>
+  <% if next_rank == 9 %>
+      No further ranks. Eagle Palms coming soon
+  <% end %>
+
+
+</div>

@@ -1,0 +1,73 @@
+<div class="col-xs-12">
+  <div class="card">
+    <div class="card-header" data-background-color="dkblue">
+
+      <h4>Activities Attended <span class="label label-info"><%= @scout_activities.count%></span>
+        <span class="pull-right">
+        <%= link_to '<i class="fa fa-plus" aria-hidden="true" data-toggle="tooltip" title="Log New Event"></i>'.html_safe,
+                    new_scout_event_path(scout_id: params[:id], attended: true) if current_user.role?(:leader) %>
+        </span></h4>
+    </div>
+    <div class="card-content">
+      <table id="scout_activities" class="table table-responsive">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Activity Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Count</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% @scout_activities.each do |scout_activity| %>
+            <tr>
+              <td class="text-warning"><%= scout_activity.event.category.titlecase %></td>
+              <td><%= link_to scout_activity.event.title, scout_activity.event %></td>
+              <td><%= date_for_display(scout_activity.event.start) %></td>
+              <td><%= date_for_display(scout_activity.event.end) %></td>
+              <td><%= scout_activity.event.logged %></td>
+            </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+
+    var table = $('#scout_activities').DataTable({
+        responsive: true,
+        "columnDefs": [
+            { "visible": false, "targets": 0 }
+        ],
+        "order": [[ 0, 'asc' ]],
+        "displayLength": 25,
+        "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+
+            api.column(0, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group info"><td colspan="5">'+group+'</td></tr>'
+                    );
+
+                    last = group;
+                }
+            } );
+        }
+    } );
+
+    // Order by the grouping
+    $('#scout_activities tbody').on( 'click', 'tr.group', function () {
+        var currentOrder = table.order()[0];
+        if ( currentOrder[0] === 2 && currentOrder[1] === 'asc' ) {
+            table.order( [ 0, 'desc' ] ).draw();
+        }
+        else {
+            table.order( [ 0, 'asc' ] ).draw();
+        }
+    } );
+</script>

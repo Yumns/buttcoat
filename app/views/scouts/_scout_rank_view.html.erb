@@ -1,0 +1,106 @@
+<% rank = Rank.find(current_rank_selected) %>
+<% requirements = Requirement.where(rank_id: current_rank_selected).order(:sortOrder) %>
+<h3 style="margin-top: 0px;"><%= rank.name %></h3>
+<div>
+  <table class="table table-striped table-responsive">
+    <thead class="text-primary">
+
+    <%
+      rank_date, displayed_rank= nil
+      completed = false
+      @scout.scout_rank_histories.each do |rank_history|
+        if current_rank_selected == rank_history.rank_id
+          rank_date = rank_history.rank_completed
+          displayed_rank = rank_history
+        end
+      end
+      if rank_date.nil? %>
+
+    <% else
+         completed = true %>
+        <tr>
+          <th colspan="6">
+            <div>
+              <% if current_user.role? :leader_full %>
+                  <% if rank_date == Date.parse('1/1/1111') %>
+                      <div class="text-center">Rank Completed on Unknown Date
+                        <%= link_to 'Update Date', edit_scout_rank_history_path(displayed_rank), remote: true, class: 'pull-right small' %></div>
+                  <% else %>
+                      <div class="text-center">Rank Completed on <%= l rank_date %>
+                        <%= link_to 'Update Date', edit_scout_rank_history_path(displayed_rank), remote: true, class: 'pull-right small' %></div>
+                  <% end %>
+              <% end %>
+            </div>
+          </th>
+        </tr>
+    <% end %>
+
+    <tr>
+      <th><i class="fa fa-check" aria-hidden="true"></i></th>
+      <th class="text-center">#</th>
+      <th>Requirement</th>
+      <th>Signed</th>
+      <th>Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% requirements.each do |req| %>
+        <% scout_requirement = {} %>
+        <%
+          if completed
+            scout_requirement[:sign_off] = 'unknown'
+            scout_requirement[:completed_date] = rank_date
+          end
+          @scout.scout_requirements.each { |test|
+            if test.requirement_id == req.id
+              scout_requirement[:sign_off] = test.sign_off
+              scout_requirement[:completed_date] = test.completed_date
+              scout_requirement[:found] = true
+              scout_requirement[:id] = test.id
+            end
+          } %>
+        <tr>
+          <% unless req.req_num.nil? %>
+              <td>
+                <% if !scout_requirement.empty? || completed %>
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                <% end %>
+              </td>
+              <td class="center">
+              <span id="req_link_<%= req.id %>">
+                <% if (current_user.role? :leader_full) && !req.mb %>
+                    <% if scout_requirement[:found] %>
+                        <%= link_to req.req_num,
+                                    edit_scout_requirement_path(ScoutRequirement.find_by(scout_id: @scout.id, requirement_id: req.id)),
+                                    remote: true,
+                                    class: 'btn btn-sm btn-secondary' %>
+                    <% else %>
+                        <%= link_to req.req_num,
+                                    new_scout_requirement_path(scout_id: @scout.id, req_id: req.id),
+                                    remote: true,
+                                    class: 'btn btn-sm btn-primary',
+                                    id: "new_link_#{req.id}" %>
+                    <% end %>
+                    </span>
+                <% else %>
+                    <%= req.req_num %>
+                <% end %>
+                </td>
+              <td><%= simple_format(req.description) %></td>
+              <td id="sign_off_<%= req.id %>"><%= scout_requirement[:sign_off] %>&nbsp;</td>
+              <% if scout_requirement[:completed_date] == Date.parse('1/1/1111') %>
+                  <td id="completed_date_<%= req.id %>">n/a</td>
+              <% else %>
+                  <td id="completed_date_<%= req.id %>">
+                    <%= l scout_requirement[:completed_date] unless scout_requirement[:completed_date].nil? %>
+                  </td>
+              <% end %>
+          <% else %>
+              <td colspan="6" class="text-info"><%= simple_format(req.description) %></td>
+          <% end %>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+

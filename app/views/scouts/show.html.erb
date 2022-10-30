@@ -1,0 +1,24 @@
+<%= content_for(:title, 'Scout Details') %>
+<div>
+  <div class="card">
+    <div class="card-header" data-background-color="dkblue">
+      <h4 class="card-title"><%= @scout.name %>
+        <% if current_user.role? :admin %>
+            <span class="pull-right">
+              <%= link_to "<i class='material-icons' data-toggle='tooltip' title='Edit Scout Details' >create</i>".html_safe,
+                          edit_scout_path(@scout) %>
+            </span>
+        <% end %>
+        <% unless @scout.active %>
+            <small>(inactive)</small>
+        <% end %>
+      </h4>
+    </div>
+    <%= render 'scout_card_detail', obj: @scout %>
+  </div>
+</div>
+<div class="card" style="margin-top: 0;">
+  <%= render 'scouts/scout_detail_nav_bar' %>
+</div>
+
+
